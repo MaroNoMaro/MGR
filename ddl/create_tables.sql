@@ -50,6 +50,68 @@ insert into  invoice_item ( invoice_id, item_number, product_number, item_amount
 select * from invoice_item;
 
 */
+/*
+if exists (select *
+from sysobjects
+where name = 'tax_code' and xtype='U')
+    drop TABLE tax_code    
+go
+create table tax_code
+(
+    tax_code int primary key,
+    tax_value decimal(7,3),
+    description nvarchar(50)
+)
+go
+--insert sample data to check everything is fine
+insert into  tax_code ( tax_code, tax_value, description )
+    VALUES (2, 5.00, N'123')
+
+select * from tax_code;
+*/
+/*
+if exists (select *
+from sysobjects
+where name = 'product' and xtype='U')
+    drop TABLE product    
+go
+create table product
+(
+    product_id int primary key,
+    product_name nvarchar(100),
+    product_category int,
+    created_on date,
+    unit_of_measure int, --tu muszę dorobić foreign key w schemacie
+    weight decimal(6,3),
+    price decimal(7,3)
+)
+go
+--insert sample data to check everything is fine
+insert into  product ( product_id, product_name, product_category,created_on,
+        unit_of_measure, weight, price )
+    VALUES (2, N'snickers', 3, '20180302', 4, 50.54, 2.59)
+
+select * from product;
+*/
+
+if exists (select *
+from sysobjects
+where name = 'product_category' and xtype='U')
+    drop TABLE product_category    
+go
+create table product_category
+(
+    product_category int primary key,
+    parent_category int, --fk
+    category_name nvarchar(100)
+)
+go
+--insert sample data to check everything is fine
+insert into  product_category ( product_category, parent_category, category_name )
+    VALUES (2, 3, N'Batony')
+
+select * from product_category;
+
 
 
 -- select TABLE_NAME from mgr.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'
