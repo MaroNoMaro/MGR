@@ -93,7 +93,7 @@ insert into  product ( product_id, product_name, product_category,created_on,
 
 select * from product;
 */
-
+/*
 if exists (select *
 from sysobjects
 where name = 'product_category' and xtype='U')
@@ -111,8 +111,143 @@ insert into  product_category ( product_category, parent_category, category_name
     VALUES (2, 3, N'Batony')
 
 select * from product_category;
+*/
 
+/*
+if exists (select *
+from sysobjects
+where name = 'business_partner' and xtype='U')
+    drop TABLE business_partner    
+go
+create table business_partner
+(
+    business_partner_id int primary key,
+    bank_account nvarchar(28) not null,
+    tax_id nvarchar(10) unique,
+    bp_name nvarchar(100) not null,
+    address_id int --fk
+)
+go
+--insert sample data to check everything is fine
+insert into  business_partner ( business_partner_id, bank_account, tax_id,
+                                bp_name, address_id )
+    VALUES ( 123, 'PL08228704366941028058934851', '7682124038',
+            'Agnieszka Witkowska sp. z o.o.', 100 )
 
+select * from business_partner;
+
+*/
+/*
+if exists (select *
+from sysobjects
+where name = 'vendor' and xtype='U')
+    drop TABLE vendor    
+go
+create table vendor
+(
+    business_partner_id int primary key,
+    preferred_currency nvarchar(3) not null
+)
+go
+--insert sample data to check everything is fine
+insert into  vendor ( business_partner_id, preferred_currency )
+    VALUES ( 123, 'PLN' )
+
+select * from vendor;
+*/
+/*
+IF OBJECT_ID('customer', 'U') IS NOT NULL
+DROP TABLE customer
+GO
+-- Create the table in the specified schema
+CREATE TABLE customer
+(
+    business_partner_id INT PRIMARY KEY, -- primary key column
+    credit_group int--fk
+);
+GO
+
+insert into customer (business_partner_id, credit_group)
+    values (100, 12);
+
+select * from customer;
+*/
+
+/*
+-- Create a new table called 'product_vendor_supply' in schema ''
+-- Drop the table if it already exists
+IF OBJECT_ID('product_vendor_supply', 'U') IS NOT NULL
+DROP TABLE product_vendor_supply
+GO
+-- Create the table in the specified schema
+CREATE TABLE product_vendor_supply
+(
+    vendor_id INT not null, --fk
+    product_id int not null, --fk
+    priority int not null
+    primary key ( vendor_id, product_id )
+);
+GO
+
+insert into product_vendor_supply (vendor_id, product_id, priority )
+    values (100, 1, 10);
+select * from product_vendor_supply;
+*/
+
+/*
+IF OBJECT_ID('.credit_group', 'U') IS NOT NULL
+DROP TABLE .credit_group
+GO
+-- Create the table in the specified schema
+CREATE TABLE .credit_group
+(
+    credit_groupI_id INT NOT NULL PRIMARY KEY, -- primary key column
+    description nvarchar(50) NOT NULL,
+    credit_value money NOT NULL
+);
+GO
+
+INSERT into credit_group (credit_groupI_id, [description], credit_value)
+    VALUES (1001,'new customers', 1000);
+SELECT * FROM credit_group;
+*/
+/*
+IF OBJECT_ID('address', 'U') IS NOT NULL
+DROP TABLE address
+GO
+-- Create the table in the specified schema
+CREATE TABLE address
+(
+    address_id INT NOT NULL PRIMARY KEY, -- primary key column
+    street nvarchar(100) not null,
+    postal_code nvarchar(6) not null,
+    city nvarchar(25) not null,
+    region_id int not null
+);
+GO
+
+insert into address (address_id, street, postal_code, city, region_id)
+    VALUES (100001, 'Wiatraczna 5', '01-716', 'Warszawa', 201);
+
+select * from address;
+*/
+
+-- Create a new table called 'region' in schema ''
+-- Drop the table if it already exists
+IF OBJECT_ID('region', 'U') IS NOT NULL
+DROP TABLE region
+GO
+-- Create the table in the specified schema
+CREATE TABLE region
+(
+    region_id INT NOT NULL PRIMARY KEY, -- primary key column
+    region_name nvarchar(50)
+);
+GO
+
+INSERT into region (region_id, region_name)
+    VALUES (201, 'Mazowieckie');
+SELECT * from region;
 
 -- select TABLE_NAME from mgr.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'
 -- ;
